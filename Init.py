@@ -457,6 +457,3 @@ def PackageDetection(PackList):
 
 
 
-
-
-

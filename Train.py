@@ -6,6 +6,8 @@
 ##
 ####################################################
 import Init
+
+
 def Pretreatment(FileDir, SufixSet):
     print("Train model start ...", end = "\n")
     import os
@@ -29,11 +31,14 @@ def Pretreatment(FileDir, SufixSet):
     print("Initial Succeed", end = "\r")
     return 0, DataDir, Result
 
+
+
 def Init(FileDir, SufixSet):
     
     return 0
 
 def Train(Data, OutputDir):
+    
     return 0
 
 
