@@ -8,6 +8,7 @@
 
 
 InputFolder = "./Input"
-ModelFolder = "./Output"
+ModelFolder = "./Model"
 TestFolder = "./Test"
-
+Setting.DataClass = ["jpg"]
+OutputFolder = "./Output"

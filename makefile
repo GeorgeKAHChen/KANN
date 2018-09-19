@@ -1,13 +1,19 @@
-FileName = main.py
+filename = main.py
 
 main:
+	python3 ${filename}
+
+test:
 	python3 ${filename} -t
 
-t:
+train:
 	python3 ${filename} -t
 
-f:
-	python3 ${filename} -f
+retrain:
+	python3 ${filename} -rt
 
-h:
+clean:
+	bash clean.sh
+
+help:
 	sh help.sh
