@@ -92,6 +92,22 @@ FigureInput()
 	return [Figure, Name]
 		Figure is the abstract location for all images
 		Name is the name for every image
+
+GetSufixFile(dir, sufixSet)
+	This function will get all file with determined sufix in the folder
+
+	dir = the folder you want to get files
+	sufixSet = [".xxx1", ".xxx2", ...] the sufix files you need
+
+	return Files location you need 
+
+PackageDetection(PackList)
+	This function will print the package which not install
+
+	PackList = ["package_name_1", "package_name_2", ...]
+
+	return True means some packages not installed
+		   False means all packages are installed
 """
 
 
@@ -399,6 +415,47 @@ def FigureInput():
 		print(str(i+1) + "\t" + Name[i])
 	
 	return [Figure, Name]
+
+
+def GetSufixFile(dir_name, sufixSet):
+	import os
+	im_paths = []
+	for parent, dirs, files in os.walk(dir_name):
+		for file in files:
+			name,sufix = file.split('.')
+			im_path = ""
+			if sufix in sufixSet:
+				im_path = os.path.join(parent,file)
+			if os.path.exists(im_path):
+				im_paths.append(im_path)
+
+	return im_paths
+
+
+
+def PackageDetection(PackList):
+	import os
+
+	FileName = "PackDet.py"
+	File = open(FileName, "w")
+	Str = "def Check():\n\tError = False\n"
+
+	for i in range(0, len(PackList)):
+		Str += "\ttry:\n\t\timport " + PackList[i] + "\n\texcept:\n\t\tprint('Not installed pakage: " + PackList[i] + "')\n\tError = True\n"
+	Str += "\treturn Error"
+	File.write(Str)
+	File.close()
+
+	import PackDet
+	Error = PackDet.Check()
+	os.remove("PackDet.py")
+	
+	return Error
+
+
+
+
+
 
 
 
