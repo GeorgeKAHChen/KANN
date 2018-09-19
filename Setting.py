@@ -7,8 +7,8 @@
 ####################################################
 
 
-InputFolder = "./Input"
+InputFolder = "./Input/Input1"
 ModelFolder = "./Model"
 TestFolder = "./Test"
-Setting.DataClass = ["jpg"]
+DataClass = ["jpg"]
 OutputFolder = "./Output"

@@ -18,23 +18,18 @@ TestDir = Setting.TestFolder
 
 def TrainMain():
     import Train
-    tem = Train.Pretreatment()
+    tem, DataDir, Result = Train.Pretreatment(FileDir, SufixSet)
     if tem:
         Error(tem)        
         return
 
-    tem, Data = Train.Init(FileDie, SufixSet)
-    if tem:
-        Error(tem)
-        return
-
-    tem, Model = Train.Train(Data, OutputDir)
+    tem, Model = Train.Train(OutputDir, DataDir, Result)
     if tem:
         Error(tem)
         return
     return
     
-
+"""
 def TestMain():
     import Test
     tem = Test.Pretreatment()
@@ -84,23 +79,23 @@ def ReLearn():
                 Error(tem)
                 return
         return    
-    
+""" 
 
 def Error(code):
     """
     All error will be treated in this funtion, it is necesasry to input error
     code into this function
     """
-    print("Error " + str(code) + "\t", end = "")
+    print("Error " + str(code) + "\t:  ", end = "")
     if code == 1:
         print("No parameter, using `main help` to determine the parameter of program")
-    if code == 2:
+    elif code == 2:
         print("No folder")
-    if code == 3:
+    elif code == 3:
         print("sufix array is empty, please determine the kind of files will be used is folder")
-    if code == 4:
+    elif code == 4:
         print("yuv error, please using yuv2rgb before learning")
-    if code == 5:
+    elif code == 5:
         print("train data lacked, please have files in 0 and 1")
     else:
         print("Unknown error, please connect the author and administrator")
@@ -113,6 +108,11 @@ if __name__ == '__main__':
     import sys
     if len(sys.argv) != 2:
         Error(1)
+    elif sys.argv[1] == "-t":
+        TrainMain()
+    
+
+
 
 
 
