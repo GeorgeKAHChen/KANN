@@ -1,8 +1,8 @@
 ####################################################
 ##
-##	Kazuki Amakawa's Neural Network
-##	Setting.py
-##	Copyright(c) by Kazuki Amakawa, all right reserved
+##    Kazuki Amakawa's Neural Network
+##    Setting.py
+##    Copyright(c) by Kazuki Amakawa, all right reserved
 ##
 ####################################################
 
