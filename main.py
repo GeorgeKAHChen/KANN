@@ -94,16 +94,19 @@ def Error(code):
     print("Error " + str(code) + "\t", end = "")
     if code == 1:
         print("No parameter, using `main help` to determine the parameter of program")
-
+    if code == 2:
+        print("No folder")
+    if code == 3:
+        print("sufix array is empty, please determine the kind of files will be used is folder")
+    if code == 4:
+        print("yuv error, please using yuv2rgb before learning")
+    if code == 5:
+        print("train data lacked, please have files in 0 and 1")
     else:
         print("Unknown error, please connect the author and administrator")
-
+    
+    print("For more help, please using command `make help`")
     return
-
-Files = GetSufixFile(FileDir + "/0", SufixSet)
-Result = [0 for n in range(len(Files))]
-Files.append(GetSufixFile(FileDir + "/1", SufixSet))
-Result.append([1 for n in range(len(Files) - len(Result)]))
 
 
 if __name__ == '__main__':
