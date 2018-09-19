@@ -19,17 +19,17 @@ TestDir = Setting.TestFolder
 def TrainMain():
 	import Train
 	tem = Train.Pretreatment()
-	if not tem:
+	if tem:
 		Error(tem)		
 		return
 
 	tem, Data = Train.Init(FileDie, SufixSet)
-	if not tem:
+	if tem:
 		Error(tem)
 		return
 
 	tem, Model = Train.Train(Data, OutputDir)
-	if not tem:
+	if tem:
 		Error(tem)
 		return
 	return
@@ -38,22 +38,22 @@ def TrainMain():
 def TestMain():
 	import Test
 	tem = Test.Pretreatment()
-	if not tem:
+	if tem:
 		Error(tem)
 		return 
 
 	tem, Model = Test.ReadModel(ModelDir)
-	if not tem:
+	if tem:
 		Error(tem)
 		return
 	
 	tem, Data = Test.ReadLocal(TestDir)
-	if not tem:
+	if tem:
 		Error(tem)
 		return
 	
 	tem, Result = Test.Test(Data)
-	if not tem:
+	if tem:
 		Error(tem)
 		return
 	return
@@ -65,22 +65,22 @@ def ReLearn():
 	import Train
 
 	tem = ReLearn.Pretreatment()
-	if not tem:
+	if tem:
 		Error(tem)
 		return
 	
 	tem, Model = Test.ReadModel(ModelDir)
-	if not tem:
+	if tem:
 		Error(tem)
 		return
 
         tem, Data = Train.Init(FileDie, SufixSet)
-        if not tem:
+        if tem:
                 Error(tem)
                 return
 
         tem, Model = Train.Train(Data, ModelDir, Model)
-        if not tem:
+        if tem:
                 Error(tem)
                 return
         return	
