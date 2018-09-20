@@ -1,10 +1,10 @@
-#KANN Programm
+# KANN Programm
 
 Kazuki Amakawa's Neural Network in image segmentation and factory production statistic problem.
 
-##Introduction
+## Introduction
 
-###Contact
+### Contact
 Github: https://www.github.com/KazukiAmakawa/KANN
 
 Email: KazukiAmakawa@gmail.com
@@ -12,10 +12,10 @@ Email: KazukiAmakawa@gmail.com
 Telegram: https://t.me/KazukiAmakawa
 
 
-##Install and Usage
+## Install and Usage
 
-###Install Surrounding
-####For Ubuntu/Debain
+### Install Surrounding
+#### For Ubuntu/Debain
 `sudo apt upgrade` 
 
 `sudo apt update` 
