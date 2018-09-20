@@ -1,7 +1,7 @@
 filename = main.py
 
 main:
-	python3 setup.py
+	python3 ${filename}
 
 test:
 	python3 ${filename} -t
@@ -17,3 +17,6 @@ clean:
 
 help:
 	sh help.sh
+
+install:
+	python3 setup.py
