@@ -1,7 +1,7 @@
 filename = main.py
 
 main:
-	python3 ${filename}
+	python3 setup.py
 
 test:
 	python3 ${filename} -t
