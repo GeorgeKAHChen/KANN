@@ -12,18 +12,18 @@ import Setting
 FileDir = Setting.InputFolder
 SufixSet = Setting.DataClass
 OutputDir = Setting.OutputFolder
-ModelDir = Setting.ModelFolder
+ModelSave = Setting.ModelSave
 TestDir = Setting.TestFolder
 
 
 def TrainMain():
     import Train
-    tem, Data, Result = Train.Pretreatment(FileDir, SufixSet)
+    tem, Data, Result = Train.Pretreatment(FileDir, SufixSet, ModelSave)
     if tem:
         Error(tem)        
         return
 
-    tem = Train.Train(OutputDir, Data, Result)
+    tem = Train.Train(OutputDir, Data, Result, ModelSave)
     if tem:
         Error(tem)
         return
@@ -97,6 +97,8 @@ def Error(code):
         print("yuv error, please using yuv2rgb before learning")
     elif code == 5:
         print("train data lacked, please have files in 0 and 1")
+    elif code == 6:
+        print("model saving folder is not exist")
     else:
         print("Unknown error, please connect the author and administrator")
     

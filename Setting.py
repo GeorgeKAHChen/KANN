@@ -8,7 +8,7 @@
 
 
 InputFolder = "./Input/Input1"
-ModelFolder = "./Model"
+ModelSave = "./Model"
 TestFolder = "./Test"
 DataClass = ["jpg"]
 OutputFolder = "./Output"

@@ -8,7 +8,7 @@
 import Init
 
 
-def Pretreatment(FileDir, SufixSet):
+def Pretreatment(FileDir, SufixSet, ModelFolder):
     import numpy as np
     from PIL import Image
     import cv2
@@ -26,6 +26,8 @@ def Pretreatment(FileDir, SufixSet):
     for i in range(0, len(SufixSet)):
         if SufixSet[i] == "yuv":
             return 4, [], []
+    if not os.path.exists(ModelFolder):
+        return 6, [], []
     
     Files1 = Init.GetSufixFile(FileDir + "/0", SufixSet)
     Files2 = Init.GetSufixFile(FileDir + "/1", SufixSet)
@@ -52,7 +54,7 @@ def Pretreatment(FileDir, SufixSet):
 
 
 
-def TensorTrain(OutputDir, Data, Result):
+def TensorTrain(OutputDir, Data, Result, ModelFolder):
     import numpy as np
     import tensorflow as ts
     print("Training initial", end = "\r")
@@ -86,7 +88,7 @@ def TensorTrain(OutputDir, Data, Result):
     return 0
 
 
-def Train(OutputDir, Data, Result):
+def Train(OutputDir, Data, Result, ModelFolder):
     import keras
     from keras.models import Sequential,Input,Model
     from keras.layers import Dense, Dropout, Flatten
@@ -120,10 +122,10 @@ def Train(OutputDir, Data, Result):
     fashion_model.summary()
     
     print("Traning, this processing may take a long time", end = "\r")
-    fashion_train = fashion_model.fit(train_X, train_label, batch_size=batch_size,epochs=epochs,verbose=1,validation_data=(valid_X, valid_label))
+    #fashion_train = fashion_model.fit(train_X, train_label, batch_size=batch_size,epochs=epochs,verbose=1,validation_data=(valid_X, valid_label))
     
     print("Training succeed", end = "\r")
-    
+    fashion_model.save(filepath)
 
     print("Model saving succeed, the location of model is " + SavStr, end = "\r")
 
