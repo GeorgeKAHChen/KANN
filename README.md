@@ -25,14 +25,3 @@ void
 `make <command>`
 
 Commands
-
-`        |	Test the training result`
-
-`   -h   |	Show this help list`
-
-`   -t   |	Train the KANN model with input data`
-
-`   -a   |	Add new data for the given model`
-
-
-

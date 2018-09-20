@@ -18,12 +18,12 @@ TestDir = Setting.TestFolder
 
 def TrainMain():
     import Train
-    tem, DataDir, Result = Train.Pretreatment(FileDir, SufixSet)
+    tem, Data, Result = Train.Pretreatment(FileDir, SufixSet)
     if tem:
         Error(tem)        
         return
 
-    tem, Model = Train.Train(OutputDir, DataDir, Result)
+    tem = Train.Train(OutputDir, Data, Result)
     if tem:
         Error(tem)
         return
