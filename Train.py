@@ -102,7 +102,7 @@ def Train(trainX, trainY, ModelFolder):
     
 
     batch_size = 128 * 72
-    epochs = 2000
+    epochs = 200
     num_classes = 2
 
     model = Sequential()
@@ -134,11 +134,11 @@ def Train(trainX, trainY, ModelFolder):
     scores = model.evaluate(trainX, trainY)
     
     model_json = model.to_json()
-    with open(ModelFolder + "model.json", "w") as json_file:
+    with open(ModelFolder + "/model.json", "w") as json_file:
         json_file.write(model_json)
-    model.save_weight("model.h5")
+    model.save_weights(ModelFolder + "/model.h5")
 
-    print("Model saving succeed, the location of model is " + SavStr, end = "\r")
+    print("Model saving succeed, the location of model is " + ModelFolder, end = "\r")
 
     print("Training model end")
     return 0
