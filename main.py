@@ -29,7 +29,8 @@ def TrainMain():
         return
     return
     
-"""
+
+
 def TestMain():
     import Test
     tem = Test.Pretreatment()
@@ -54,6 +55,7 @@ def TestMain():
     return
 
 
+"""
 def ReLearn():
     import ReLearn
     import Test

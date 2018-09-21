@@ -1,13 +1,15 @@
-filename = main.py
-
 main:
-	@python3 ${filename}
+	@python3 main.py
 
 test:
-	@python3 ${filename} -t
+	@python3 main.py -t
+
+ctest:
+	gcc test.c -o ./test
+	./test
 
 train:
-	@python3 ${filename} -t
+	@python3 main.py -t
 
 retrain:
 	@python3 ${filename} -rt
@@ -19,4 +21,4 @@ help:
 	@sh help.sh
 
 install:
-	@python3 setup.py
+	@sh setup.sh
