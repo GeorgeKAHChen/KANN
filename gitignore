@@ -138,10 +138,8 @@ venv.bak/
 *.app
 
 #MyFile 
-Output/
 Figure/
 SaveArr*
-Saving/
 .gitignore
 .DS_Store
 *.log
