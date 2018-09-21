@@ -33,9 +33,9 @@ def Pretreatment(FileDir, SufixSet, ModelFolder):
     Files2 = Init.GetSufixFile(FileDir + "/1", SufixSet)
     
     #Build the sign
-    Result = [0 for n in range(len(Files1))]
+    Result = [[0, 1] for n in range(len(Files1))]
     Files1 += Files2
-    Result += [1 for n in range(len(Files2))]
+    Result += [[1, 0] for n in range(len(Files2))]
 
     
     if len(Files1) == 0 or len(Files2) == 0:
@@ -57,6 +57,7 @@ def Pretreatment(FileDir, SufixSet, ModelFolder):
 def TensorTrain(OutputDir, Data, Result, ModelFolder):
     import numpy as np
     import tensorflow as ts
+    import os
     print("Training initial", end = "\r")
     
     #Training labels
@@ -88,44 +89,54 @@ def TensorTrain(OutputDir, Data, Result, ModelFolder):
     return 0
 
 
-def Train(OutputDir, Data, Result, ModelFolder):
+def Train(trainX, trainY, ModelFolder):
     import keras
     from keras.models import Sequential,Input,Model
     from keras.layers import Dense, Dropout, Flatten
     from keras.layers import Conv2D, MaxPooling2D
     from keras.layers.normalization import BatchNormalization
     from keras.layers.advanced_activations import LeakyReLU
+    import os
 
     print("Training initial", end = "\r")
     
-    #batch_size = 64
-    #epochs = 20
-    #num_classes = 10
 
-    fashion_model = Sequential()
-    fashion_model.add(Conv2D(32, kernel_size=(3, 3),activation='linear',input_shape=(28,28,1),padding='same'))
-    fashion_model.add(LeakyReLU(alpha=0.1))
-    fashion_model.add(MaxPooling2D((2, 2),padding='same'))
-    fashion_model.add(Conv2D(64, (3, 3), activation='linear',padding='same'))
-    fashion_model.add(LeakyReLU(alpha=0.1))
-    fashion_model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
-    fashion_model.add(Conv2D(128, (3, 3), activation='linear',padding='same'))
-    fashion_model.add(LeakyReLU(alpha=0.1))                  
-    fashion_model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
-    fashion_model.add(Flatten())
-    fashion_model.add(Dense(128, activation='linear'))
-    fashion_model.add(LeakyReLU(alpha=0.1))                  
-    fashion_model.add(Dense(num_classes, activation='softmax'))
+    batch_size = 128 * 72
+    epochs = 2000
+    num_classes = 2
 
-    fashion_model.compile(loss=keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adam(),metrics=['accuracy'])
+    model = Sequential()
+    model.add(Conv2D(32, kernel_size=(3, 3),activation='linear',input_shape=(72, 128, 3), padding='same'))
+    model.add(LeakyReLU(alpha=0.1))
+    model.add(MaxPooling2D((2, 2),padding='same'))
+    model.add(Conv2D(64, (3, 3), activation='linear',padding='same'))
+    model.add(LeakyReLU(alpha=0.1))
+    model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
+    model.add(Conv2D(128, (3, 3), activation='linear',padding='same'))
+    model.add(LeakyReLU(alpha=0.1))                  
+    model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
+    model.add(Flatten())
+    model.add(Dense(128, activation='linear'))
+    model.add(LeakyReLU(alpha=0.1))                  
+    model.add(Dense(num_classes, activation='softmax'))
+
+    model.compile(loss=keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adam(),metrics=['accuracy'])
+    os.system("clear")
     print("Blank Model initial Succeed, Here is the summary of model", end = "\n")
-    fashion_model.summary()
-    
-    print("Traning, this processing may take a long time", end = "\r")
-    #fashion_train = fashion_model.fit(train_X, train_label, batch_size=batch_size,epochs=epochs,verbose=1,validation_data=(valid_X, valid_label))
+    model.summary()
+    input("Press Enter to continue")
+
+    os.system("clear")
+    print("Traning, this processing may take a long time", end = "\n")
+    train = model.fit(trainX, trainY, batch_size=batch_size,epochs=epochs,verbose=1)#validation_data=(valid_X, valid_label))
     
     print("Training succeed", end = "\r")
-    fashion_model.save(filepath)
+    scores = model.evaluate(trainX, trainY)
+    
+    model_json = model.to_json()
+    with open(ModelFolder + "model.json", "w") as json_file:
+        json_file.write(model_json)
+    model.save_weight("model.h5")
 
     print("Model saving succeed, the location of model is " + SavStr, end = "\r")
 
