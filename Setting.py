@@ -7,8 +7,8 @@
 ####################################################
 
 
-InputFolder = "./Input/Input1"
-ModelSave = "./Model"
+InputFolder = "./Input/SampleInput"
+ModelSave = "./Output/SampleModel"
 TestFolder = "./Test"
 DataClass = ["jpg"]
-OutputFolder = "./Output"
+OutputFolder = "./Output/SampleResult"

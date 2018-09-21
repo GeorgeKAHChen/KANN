@@ -23,7 +23,7 @@ def TrainMain():
         Error(tem)        
         return
 
-    tem = Train.Train(OutputDir, Data, Result, ModelSave)
+    tem = Train.Train(Data, Result, ModelSave)
     if tem:
         Error(tem)
         return
@@ -108,6 +108,7 @@ def Error(code):
 
 if __name__ == '__main__':
     import sys
+    Init.StaClear()
     if len(sys.argv) != 2:
         Error(1)
     elif sys.argv[1] == "-t":

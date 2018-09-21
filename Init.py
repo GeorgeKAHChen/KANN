@@ -159,7 +159,7 @@ def MoveFile(FileLocation, NewLocation, NewName):
 
 def StaClear():
     import os
-    if SystemJudge() == 0:
+    if not SystemJudge() == "Dos":
         os.system("clear")
     else:
         os.system("cls")
