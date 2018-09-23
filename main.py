@@ -8,13 +8,14 @@
 import Init
 import Setting 
 
-
-FileDir = Setting.InputFolder
 SufixSet = Setting.DataClass
-OutputDir = Setting.OutputFolder
+FileDir = Setting.InputFolder
 ModelSave = Setting.ModelSave
+OutputDir = Setting.OutputFolder
+ModelDir = Setting.ModelFolder
 TestDir = Setting.TestFolder
 
+iteration = 1000
 
 def TrainMain():
     import Train
@@ -33,7 +34,7 @@ def TrainMain():
 
 def TestMain():
     import Test
-    tem = Test.Pretreatment()
+    tem, TestData, Model = Test.Pretreatment(TestDir, SufixSet)
     if tem:
         Error(tem)
         return 
