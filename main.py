@@ -105,10 +105,11 @@ if __name__ == '__main__':
     Init.StaClear()
     if len(sys.argv) != 2:
         Error(1)
+    elif sys.argv[1] == "-l":
+        TrainMain()
     elif sys.argv[1] == "-t":
         TrainMain()
     
-
 
 
 
