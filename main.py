@@ -14,8 +14,7 @@ ModelSave = Setting.ModelSave
 OutputDir = Setting.OutputFolder
 ModelDir = Setting.ModelFolder
 TestDir = Setting.TestFolder
-
-iteration = 1000
+Iteration = Setting.iteration
 
 def TrainMain():
     import Train
@@ -24,7 +23,7 @@ def TrainMain():
         Error(tem)        
         return
 
-    tem = Train.Train(Data, Result, ModelSave)
+    tem = Train.Train(Data, Result, ModelSave, Iteration)
     if tem:
         Error(tem)
         return
@@ -34,22 +33,12 @@ def TrainMain():
 
 def TestMain():
     import Test
-    tem, TestData, Model = Test.Pretreatment(TestDir, SufixSet)
+    tem, TestData, FileNames = Test.Pretreatment(TestDir, SufixSet, ModelDir)
     if tem:
         Error(tem)
         return 
-
-    tem, Model = Test.ReadModel(ModelDir)
-    if tem:
-        Error(tem)
-        return
     
-    tem, Data = Test.ReadLocal(TestDir)
-    if tem:
-        Error(tem)
-        return
-    
-    tem, Result = Test.Test(Data)
+    tem, Result = Test.Test(TestData, ModelDir, OutputDir, FileNames)
     if tem:
         Error(tem)
         return
@@ -82,7 +71,7 @@ def ReLearn():
                 Error(tem)
                 return
         return    
-""" 
+"""
 
 def Error(code):
     """
@@ -102,6 +91,8 @@ def Error(code):
         print("train data lacked, please have files in 0 and 1")
     elif code == 6:
         print("model saving folder is not exist")
+    elif code == 7:
+        print("test data is not be found")
     else:
         print("Unknown error, please connect the author and administrator")
     

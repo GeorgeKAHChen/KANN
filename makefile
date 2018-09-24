@@ -6,7 +6,7 @@ test:
 
 ctest:
 	gcc test.c -o ./test
-	./test
+	./test 
 
 train:
 	@python3 main.py -t

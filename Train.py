@@ -54,7 +54,7 @@ def Pretreatment(FileDir, SufixSet, ModelFolder):
 
 
 
-def TensorTrain(OutputDir, Data, Result, ModelFolder):
+def TensorTrain(OutputDir, Data, Result, ModelFolder, Iteration):
     import numpy as np
     import tensorflow as ts
     import os
@@ -68,7 +68,7 @@ def TensorTrain(OutputDir, Data, Result, ModelFolder):
     n_classes = 2
 
     #Training parameter
-    training_iters = 200 
+    training_iters = Iteration 
     learning_rate = 0.001 
     batch_size = 128
 
@@ -89,7 +89,10 @@ def TensorTrain(OutputDir, Data, Result, ModelFolder):
     return 0
 
 
-def Train(trainX, trainY, ModelFolder):
+def Train(trainX, trainY, ModelFolder, Iteration):
+    """
+    keras network training
+    """
     import keras
     from keras.models import Sequential,Input,Model
     from keras.layers import Dense, Dropout, Flatten
@@ -102,7 +105,7 @@ def Train(trainX, trainY, ModelFolder):
     
 
     batch_size = 128 * 72
-    epochs = 200
+    epochs = Iteration
     num_classes = 2
 
     model = Sequential()
