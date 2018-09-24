@@ -22,3 +22,4 @@ help:
 
 install:
 	@sh setup.sh
+

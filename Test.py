@@ -69,8 +69,8 @@ def Test(TestData, ModelDir, OutputDir, FileNames):
     print("Test ended, result saving", end = "\r")
     FileName = OutputDir + "/Result.out"
     File = open(FileName, "w")
-   	File.write(OutputStr)
-   	File.close()
+    File.write(OutputStr)
+    File.close()
     print("Test model end", end = "\n")
 
     return 0 
