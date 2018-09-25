@@ -46,7 +46,8 @@ def Pretreatment(FileDir, SufixSet, ModelDir):
     for i in range(0, len(Files1)):
         img = np.array(Image.open(Files1[i]).convert("L"))
         Data.append(cv2.resize(img, (128, 72)))
-
+    
+    Data = np.array(Data)
     Data = Data.reshape(-1, 128, 72, 1)
     Data = Data / 255
 
@@ -59,8 +60,12 @@ def Pretreatment(FileDir, SufixSet, ModelDir):
 def Test(TestData, ModelDir, OutputDir, FileNames):
     import keras
     import os
+    from keras.models import model_from_json
 
-    model = load_model(ModelDir + "model.h5")
+    with open(ModelDir + '/model.json', 'r') as f:
+        model = model_from_json(f.read())
+
+    model.load_weights(ModelDir + "/model.h5")
     print("Model read succeed, testing", end = "\r")
 
     OutputStr = "FileName\t |\tResult"

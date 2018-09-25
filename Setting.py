@@ -1,3 +1,10 @@
+"""
+Note: Some basic usage of vi/vim
+      Press Esc key and input command `:wq` to escape vim and save change
+      Press i key if you want to change some parameter
+      Press Esc key and input command `:q!` to escape vim without changing
+"""
+
 ####################################################
 ##
 ##    Kazuki Amakawa's Neural Network
@@ -103,15 +110,5 @@ int iteration
 This int is the number of iterations you want your learning algorithm 
 run during training
 """
-iteration = 1000
-#====================================================
-
-
-
-
-
-#====================================================
-"""
-char 
-"""
+iteration = 2000
 #====================================================

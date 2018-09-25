@@ -16,14 +16,14 @@ ModelDir = Setting.ModelFolder
 TestDir = Setting.TestFolder
 Iteration = Setting.iteration
 
-def TrainMain():
+def TrainMain(Presentation):
     import Train
     tem, Data, Result = Train.Pretreatment(FileDir, SufixSet, ModelSave)
     if tem:
         Error(tem)        
         return
 
-    tem = Train.Train(Data, Result, ModelSave, Iteration)
+    tem = Train.Train(Data, Result, ModelSave, Iteration, Presentation)
     if tem:
         Error(tem)
         return
@@ -31,7 +31,7 @@ def TrainMain():
     
 
 
-def TestMain():
+def TestMain(Presentation):
     import Test
     tem, TestData, FileNames = Test.Pretreatment(TestDir, SufixSet, ModelDir)
     if tem:
@@ -46,7 +46,8 @@ def TestMain():
 
 
 """
-def ReLearn():
+
+def ReLearn(Presentation):
     import ReLearn
     import Test
     import Train
@@ -71,7 +72,10 @@ def ReLearn():
                 Error(tem)
                 return
         return    
+
 """
+
+
 
 def Error(code):
     """
@@ -96,6 +100,8 @@ def Error(code):
         print("model saving folder is not exist")
     elif code - 100 == 7:
         print("test data is not be found")
+    elif code - 100 == 8:
+        print("make setting error, the parameter p only have 0 and 1 value")
     else:
         print("Unknown error, please connect the author and administrator")
     
@@ -106,12 +112,14 @@ def Error(code):
 if __name__ == '__main__':
     import sys
     Init.StaClear()
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 3:
         Error(1)
+    elif sys.argv[2] != "0" and sys.argv[2] != "1":
+        Error(8)
     elif sys.argv[1] == "-l":
-        TrainMain()
+        TrainMain(sys.argv[2])
     elif sys.argv[1] == "-t":
-        TestMain()
+        TestMain(sys.argv[2])
     
 
 

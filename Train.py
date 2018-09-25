@@ -65,7 +65,7 @@ def Pretreatment(FileDir, SufixSet, ModelFolder):
 
 
 
-def Train(trainX, trainY, ModelFolder, Iteration):
+def Train(trainX, trainY, ModelFolder, Iteration, Presentation):
     """
     keras network training
     """
@@ -86,17 +86,17 @@ def Train(trainX, trainY, ModelFolder, Iteration):
     num_classes = 2
 
     model = Sequential()
-    model.add(Conv2D(16, kernel_size=(3, 3),activation='linear',input_shape=(128, 72, 1), padding='same'))
+    model.add(Conv2D(8, kernel_size=(3, 3),activation='linear',input_shape=(128, 72, 1), padding='same'))
     model.add(LeakyReLU(alpha=0.1))
     model.add(MaxPooling2D((2, 2),padding='same'))
-    model.add(Conv2D(64, (3, 3), activation='linear',padding='same'))
-    model.add(LeakyReLU(alpha=0.1))
-    model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
+    #model.add(Conv2D(64, (3, 3), activation='linear',padding='same'))
+    #model.add(LeakyReLU(alpha=0.1))
+    #model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
     #model.add(Conv2D(128, (3, 3), activation='linear',padding='same'))
     #model.add(LeakyReLU(alpha=0.1))                  
     #model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
     model.add(Flatten())
-    model.add(Dense(64, activation='linear'))
+    model.add(Dense(16, activation='linear'))
     model.add(LeakyReLU(alpha=0.1))                  
     model.add(Dense(num_classes, activation='softmax'))
 
@@ -117,6 +117,24 @@ def Train(trainX, trainY, ModelFolder, Iteration):
     with open(ModelFolder + "/model.json", "w") as json_file:
         json_file.write(model_json)
     model.save_weights(ModelFolder + "/model.h5")
+
+    if Presentation:
+        import matplotlib.pyplot as plt
+        accuracy = train.history['acc']
+        val_accuracy = train.history['val_acc']
+        loss = train.history['loss']
+        val_loss = train.history['val_loss']
+        epochs = range(len(accuracy))
+        plt.plot(epochs, accuracy, 'bo', label='Training accuracy')
+        plt.plot(epochs, val_accuracy, 'b', label='Validation accuracy')
+        plt.title('Training and validation accuracy')
+        plt.legend()
+        plt.figure()
+        plt.plot(epochs, loss, 'bo', label='Training loss')
+        plt.plot(epochs, val_loss, 'b', label='Validation loss')
+        plt.title('Training and validation loss')
+        plt.legend()
+        plt.show()
 
     print("Model saving succeed, the location of model is " + ModelFolder, end = "\r")
 
