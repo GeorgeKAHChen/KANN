@@ -32,7 +32,7 @@ def Pretreatment(FileDir, SufixSet, ModelDir):
     Name = []
     for i in range(0, len(Files1)):
         Str = ""
-        for j in range(len(Files1[i], -1, -1)):
+        for j in range(len(Files1[i]) - 1, -1, -1):
             if Files1[i][j] == "/":
                 break
             Str = Files1[i][j] + Str
@@ -41,10 +41,14 @@ def Pretreatment(FileDir, SufixSet, ModelDir):
     if len(Files1) == 0:
         return 7, [], []
 
+    Data = []
     #Get image data and down sample    
     for i in range(0, len(Files1)):
-        img = np.array(Image.open(Files1[i]))
+        img = np.array(Image.open(Files1[i]).convert("L"))
         Data.append(cv2.resize(img, (128, 72)))
+
+    Data = Data.reshape(-1, 128, 72, 1)
+    Data = Data / 255
 
     print("Data read succeed, testing surround initial", end = "\r")
     os.environ["CUDA_VISIBLE_DEVICES"]="0" 

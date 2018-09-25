@@ -13,6 +13,8 @@ def Pretreatment(FileDir, SufixSet, ModelFolder):
     from PIL import Image
     import cv2
     import os
+    from keras.utils import to_categorical
+
     print("Train model start, data reading", end = "\r")
     
     #Initial data set
@@ -28,65 +30,39 @@ def Pretreatment(FileDir, SufixSet, ModelFolder):
             return 4, [], []
     if not os.path.exists(ModelFolder):
         return 6, [], []
-    
+
     Files1 = Init.GetSufixFile(FileDir + "/0", SufixSet)
     Files2 = Init.GetSufixFile(FileDir + "/1", SufixSet)
     
     #Build the sign
-    Result = [[0, 1] for n in range(len(Files1))]
+    Result = [0 for n in range(len(Files1))]
     Files1 += Files2
-    Result += [[1, 0] for n in range(len(Files2))]
+    Result += [1 for n in range(len(Files2))]
 
     
     if len(Files1) == 0 or len(Files2) == 0:
         return 5, [], []
-
+    
     #Get image data and down sample    
     for i in range(0, len(Files1)):
-        img = np.array(Image.open(Files1[i]))
+        img = np.array(Image.open(Files1[i]).convert("L"))
         Data.append(cv2.resize(img, (128, 72)))
 
     print("Data read succeed, training surround initial", end = "\r")
     os.environ["CUDA_VISIBLE_DEVICES"]="0" 
+    
+    Data = np.array(Data)
+    Result = np.array(Result)
+    
+    Data = Data.reshape(-1, 128, 72, 1)
+    Data = Data / 255
+
+    Result = to_categorical(Result)
 
     return 0, np.array(Data), np.array(Result)
         
 
 
-
-def TensorTrain(OutputDir, Data, Result, ModelFolder, Iteration):
-    import numpy as np
-    import tensorflow as ts
-    import os
-    print("Training initial", end = "\r")
-    
-    #Training labels
-    label_dict = {
-        0: 'No person',
-        1: 'Have person',
-    }
-    n_classes = 2
-
-    #Training parameter
-    training_iters = Iteration 
-    learning_rate = 0.001 
-    batch_size = 128
-
-    x = tf.placeholder("float", [None, 28,28,1])
-    y = tf.placeholder("float", [None, n_classes])
-
-
-    print("Blank Model initial Succeed", end = "\r")
-    
-    print("Traning, this processing may take a long time", end = "\r")
-
-    print("Training succeed", end = "\r")
-
-    print("Model saving succeed, the location of model is " + SavStr, end = "\r")
-
-    print("Training model end")
-
-    return 0
 
 
 def Train(trainX, trainY, ModelFolder, Iteration):
@@ -100,26 +76,27 @@ def Train(trainX, trainY, ModelFolder, Iteration):
     from keras.layers.normalization import BatchNormalization
     from keras.layers.advanced_activations import LeakyReLU
     import os
+    from sklearn.model_selection import train_test_split
 
-    print("Training initial", end = "\r")
-    
+    trainX,validX,trainY,validY = train_test_split(trainX, trainY, test_size=0.2, random_state=13)
+
 
     batch_size = 128 * 72
     epochs = Iteration
     num_classes = 2
 
     model = Sequential()
-    model.add(Conv2D(32, kernel_size=(3, 3),activation='linear',input_shape=(72, 128, 3), padding='same'))
+    model.add(Conv2D(16, kernel_size=(3, 3),activation='linear',input_shape=(128, 72, 1), padding='same'))
     model.add(LeakyReLU(alpha=0.1))
     model.add(MaxPooling2D((2, 2),padding='same'))
-    #model.add(Conv2D(64, (3, 3), activation='linear',padding='same'))
-    #model.add(LeakyReLU(alpha=0.1))
-    #model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
+    model.add(Conv2D(64, (3, 3), activation='linear',padding='same'))
+    model.add(LeakyReLU(alpha=0.1))
+    model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
     #model.add(Conv2D(128, (3, 3), activation='linear',padding='same'))
     #model.add(LeakyReLU(alpha=0.1))                  
     #model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
     model.add(Flatten())
-    model.add(Dense(128, activation='linear'))
+    model.add(Dense(64, activation='linear'))
     model.add(LeakyReLU(alpha=0.1))                  
     model.add(Dense(num_classes, activation='softmax'))
 
@@ -131,7 +108,7 @@ def Train(trainX, trainY, ModelFolder, Iteration):
 
     os.system("clear")
     print("Traning, this processing may take a long time", end = "\n")
-    train = model.fit(trainX, trainY, batch_size=batch_size,epochs=epochs,verbose=1)#validation_data=(valid_X, valid_label))
+    train = model.fit(trainX, trainY, batch_size=batch_size,epochs=epochs,verbose=1, validation_data=(validX, validY))
     
     print("Training succeed", end = "\r")
     scores = model.evaluate(trainX, trainY)
