@@ -38,42 +38,11 @@ def TestMain(Presentation):
         Error(tem)
         return 
     
-    tem, Result = Test.Test(TestData, ModelDir, OutputDir, FileNames)
+    tem = Test.Test(TestData, ModelDir, OutputDir, FileNames)
     if tem:
         Error(tem)
         return
     return
-
-
-"""
-
-def ReLearn(Presentation):
-    import ReLearn
-    import Test
-    import Train
-
-    tem = ReLearn.Pretreatment()
-    if tem:
-        Error(tem)
-        return
-    
-    tem, Model = Test.ReadModel(ModelDir)
-    if tem:
-        Error(tem)
-        return
-
-        tem, Data = Train.Init(FileDie, SufixSet)
-        if tem:
-                Error(tem)
-                return
-
-        tem, Model = Train.Train(Data, ModelDir, Model)
-        if tem:
-                Error(tem)
-                return
-        return    
-
-"""
 
 
 
@@ -117,9 +86,10 @@ if __name__ == '__main__':
     elif sys.argv[2] != "0" and sys.argv[2] != "1":
         Error(8)
     elif sys.argv[1] == "-l":
-        TrainMain(sys.argv[2])
+        TrainMain(int(sys.argv[2]))
     elif sys.argv[1] == "-t":
-        TestMain(sys.argv[2])
+        TestMain(int(sys.argv[2]))
+        
     
 
 

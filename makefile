@@ -1,20 +1,15 @@
-p = 1
-
 main:
 	@python3 main.py
 
 test:
-	@python3 main.py -t ${p}
+	@python3 main.py -t 0
 
 ctest:
 	gcc test.c -o ./test
 	./test 
 
 train:
-	@python3 main.py -l ${p}
-
-retrain:
-	@python3 main.py -rl ${p}
+	@python3 main.py -l 0
 
 clean:
 	@bash clean.sh

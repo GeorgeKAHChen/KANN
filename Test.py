@@ -53,7 +53,6 @@ def Pretreatment(FileDir, SufixSet, ModelDir):
 
     print("Data read succeed, testing surround initial", end = "\r")
     os.environ["CUDA_VISIBLE_DEVICES"]="0" 
-
     return 0, np.array(Data), Name
         
 
@@ -68,12 +67,11 @@ def Test(TestData, ModelDir, OutputDir, FileNames):
     model.load_weights(ModelDir + "/model.h5")
     print("Model read succeed, testing", end = "\r")
 
-    OutputStr = "FileName\t |\tResult"
-    for i in range(0, len(TestData)):
-        OutputStr += FileNames[i]
-        OutputStr += "\t\t"
-        OutputStr += model.predict_classes(TestData[i])
-        OutputStr += "\n"        
+    OutputStr = "FileName\t |\tResult\n"
+    Result = model.predict_classes(TestData)
+
+    for i in range(0, len(FileNames)):
+        OutputStr += FileNames[i] + "\t |\t" + str(Result[i]) + "\n"
     
     print("Test ended, result saving", end = "\r")
     FileName = OutputDir + "/Result.out"

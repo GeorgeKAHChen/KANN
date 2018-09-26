@@ -58,7 +58,6 @@ def Pretreatment(FileDir, SufixSet, ModelFolder):
     Data = Data / 255
 
     Result = to_categorical(Result)
-
     return 0, np.array(Data), np.array(Result)
         
 

@@ -75,7 +75,7 @@ string OutputFolder
 
 This folder will save the result of your test data
 """
-OutputFolder = "./Output/SampleResult"
+OutputFolder = "./Output"
 #====================================================
 
 
