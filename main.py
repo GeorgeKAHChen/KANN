@@ -91,7 +91,7 @@ if __name__ == '__main__':
     if sys.argv[1] == "-i":
         try:
             import install
-            if install.install() == 0:
+            if install.install(int(sys.argv[3])) == 0:
                 print("Install succeed")
                 if sys.argv[3] == "0":
                     os.system("rm -rf install.py")

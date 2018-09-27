@@ -17,7 +17,7 @@ def FileExist(FileName):
 
 
 
-def install():
+def install(test):
     import os
     Error = 0
     Error += FileExist(["Init.py", "Setting.py", "Train.py", "Test.py", "help.sh", "clean.sh", "gitignore"])
@@ -27,7 +27,8 @@ def install():
         return 1
     os.system("g++ -std=c++11 test_run_cnn.cc keras_model.cc -o ctest")
     os.system("vim Setting.py")
-    os.system("mv gitignore .gitignore")
+    if not test:
+        os.system("mv gitignore .gitignore")
     return 0
 
 
