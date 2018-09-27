@@ -13,9 +13,6 @@
 #
 ####################################################
 
-
-
-
 from keras.models import Sequential, model_from_json
 import json
 import Setting
@@ -55,3 +52,10 @@ with open(Setting.ModelFolder + "/model.dumped", 'w') as fout:
             for w in W:
                 fout.write(str(w) + '\n')
             fout.write(str(model.layers[ind].get_weights()[1]) + '\n')
+
+
+
+os.system("./ctest " + Setting.ModelFolder + "/model.dumped " + Setting.TestFolder + Setting.OutputFolder + "/Result.out")
+
+
+

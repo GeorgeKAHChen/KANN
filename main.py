@@ -88,24 +88,24 @@ def Error(code):
 if __name__ == '__main__':
     import sys
     import os
-    if sys.argv[2] == "-i":
+    if len(sys.argv) == 2 and sys.argv[1] == "-i":
         try:
             import install
-            if install.install == 0
-            os.system("rm -rf install.py")
+            if install.install() == 0:
+                os.system("rm -rf install.py")
         except:
             Error(9)
-        return
+            os._exit(0)
     
     try:
         import install
         Error(10)
-        return
+        os._exit(0)
     except:
         pass
 
     Init.StaClear()
-    if len(sys.argv) != 3
+    if len(sys.argv) != 3:
         Error(1)
     elif sys.argv[2] != "0" and sys.argv[2] != "1":
         Error(8)

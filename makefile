@@ -1,5 +1,4 @@
-all: ${p}
-p = 0
+p=0
 
 main:
 	@python3 main.py
@@ -7,8 +6,11 @@ main:
 test:
 	@python3 main.py -t ${p}
 
-ctest:
+ctinit:
 	@python3 dump2simple.py
+
+ctest:
+	include tmp
 	@./ctest ${ModelFolder}/model.dumped ${TestFolder} ${OutputFolder}/Result.out
 
 train:
