@@ -1,3 +1,4 @@
+include tmp
 t=1
 p=0
 
@@ -10,9 +11,8 @@ test:
 ctinit:
 	@python3 dump2simple.py
 
-ctest:
-	include tmp
-	@./ctest ${ModelFolder}/model.dumped ${TestFolder} ${OutputFolder}/Result.out
+cpptest:
+	./ctest ${ModelFolder}/model.dumped ${TestFolder} ${OutputFolder}/Result.out
 
 train:
 	@python3 main.py -l ${p} ${t}

@@ -1,0 +1,3 @@
+ModelFolder=./Output/SampleModel
+TestFolder=./Input/Data
+OutputFolder=./Output

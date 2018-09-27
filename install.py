@@ -17,11 +17,28 @@ def FileExist(FileName):
 
 
 
+def HeadExist():
+    Error = 0
+    try:
+        import numpy
+    except:
+        print("Error: numpy not exist")
+        Error += 1
+
+
+    return Error
+
+
+
+
 def install(test):
     import os
     Error = 0
-    Error += FileExist(["Init.py", "Setting.py", "Train.py", "Test.py", "help.sh", "clean.sh", "gitignore"])
-    #Error += HeadExist() 
+    
+    Error += FileExist(["dump2simple.py", "Init.py", "keras_model.cc", "Test.py", "Train.py", "clean.sh", "gitignore", "keras_model.h", "test_run_cnn.cc", "help.sh", "LICENSE", "Setting.py", "tmp"])
+    
+    Error += HeadExist() 
+    
     if Error != 0:
         print("Install break")
         return 1

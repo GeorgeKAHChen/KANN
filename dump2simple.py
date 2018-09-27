@@ -16,6 +16,8 @@
 from keras.models import Sequential, model_from_json
 import json
 import Setting
+import Init
+import os
 
 model = model_from_json(open(Setting.ModelFolder + "/model.json").read())
 model.load_weights(Setting.ModelFolder + "/model.h5")
@@ -54,8 +56,16 @@ with open(Setting.ModelFolder + "/model.dumped", 'w') as fout:
             fout.write(str(model.layers[ind].get_weights()[1]) + '\n')
 
 
-
-os.system("./ctest " + Setting.ModelFolder + "/model.dumped " + Setting.TestFolder + Setting.OutputFolder + "/Result.out")
+if os.path.exists("tmp"):
+    os.system("rm -rf tmp")
+Init.BuildFile("tmp")
+String = ""
+String += "ModelFolder='" + str(Setting.ModelFolder) + "'\n"
+String += "TestFolder='" + str(Setting.TestFolder) + "'\n"
+String += "OutputFolder='" + str(Setting.OutputFolder) + "'\n"
+File = open("tmp", "w")
+File.write(String)
+File.close()
 
 
 

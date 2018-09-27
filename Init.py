@@ -137,7 +137,6 @@ def BuildFile(FileName):
         else:
             os.system("copy null " + str(FileName))
     Str = FileName + 'build succeed'
-    LogWrite(Str, '0')
 
 
 def BuildFolder(FolderName):
