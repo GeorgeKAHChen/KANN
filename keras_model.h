@@ -1,3 +1,12 @@
+//####################################################
+//
+//       keras2cpp
+//       FileName: keras_model.cc
+//       Copyright(c) by pplonski, all right reserved
+//       Github: https://github.com/pplonski/keras2cpp
+//
+//####################################################
+
 #ifndef KERAS_MODEL__H
 #define KERAS_MODEL__H
 

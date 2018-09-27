@@ -1,3 +1,12 @@
+//####################################################
+//
+//       keras2cpp
+//       FileName: test_run_cnn.cc
+//       Copyright(c) by pplonski, all right reserved
+//       Github: https://github.com/pplonski/keras2cpp
+//
+//####################################################
+
 #include "keras_model.h"
 
 #include <iostream>

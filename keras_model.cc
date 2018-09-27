@@ -1,3 +1,12 @@
+//####################################################
+//
+//       keras2cpp
+//       FileName: dump_to_simple_cpp.py
+//       Copyright(c) by pplonski, all right reserved
+//       Github: https://github.com/pplonski/keras2cpp
+//
+//####################################################
+
 #include "keras_model.h"
 
 #include <iostream>
