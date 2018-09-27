@@ -71,6 +71,10 @@ def Error(code):
         print("test data is not be found")
     elif code - 100 == 8:
         print("make setting error, the parameter p only have 0 and 1 value")
+    elif code - 100 == 9:
+        print("Command error, you have been installed or the files of system are lost")
+    elif code - 100 == 10:
+        print("Install error, please using command `make install` to install the system before using it")
     else:
         print("Unknown error, please connect the author and administrator")
     
@@ -78,10 +82,30 @@ def Error(code):
     return
 
 
+
+
+
 if __name__ == '__main__':
     import sys
+    import os
+    if sys.argv[2] == "-i":
+        try:
+            import install
+            if install.install == 0
+            os.system("rm -rf install.py")
+        except:
+            Error(9)
+        return
+    
+    try:
+        import install
+        Error(10)
+        return
+    except:
+        pass
+
     Init.StaClear()
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 3
         Error(1)
     elif sys.argv[2] != "0" and sys.argv[2] != "1":
         Error(8)

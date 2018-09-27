@@ -86,7 +86,7 @@ string TestFolder
 
 This folder is the location of your test data
 """
-TestFolder = "./Input/SampleTest"
+TestFolder = "./Input/Data"
 #====================================================
 
 
@@ -110,5 +110,5 @@ int iteration
 This int is the number of iterations you want your learning algorithm 
 run during training
 """
-iteration = 2000
+iteration = 500
 #====================================================
