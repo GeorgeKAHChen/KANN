@@ -88,12 +88,13 @@ def Error(code):
 if __name__ == '__main__':
     import sys
     import os
-    if len(sys.argv) == 2 and sys.argv[1] == "-i":
+    if sys.argv[1] == "-i":
         try:
             import install
             if install.install() == 0:
                 print("Install succeed")
-                os.system("rm -rf install.py")
+                if sys.argv[3] == "0":
+                    os.system("rm -rf install.py")
                 os._exit(0)
             else:
                print("Install failed, please determine the relationship package and file integrity")
@@ -102,15 +103,16 @@ if __name__ == '__main__':
             Error(9)
             os._exit(0)
     
-    try:
-        import install
-        Error(10)
-        os._exit(0)
-    except:
-        pass
+    if sys.argv[3] == "0":
+        try:
+            import install
+            Error(10)
+            os._exit(0)
+        except:
+            pass
 
     Init.StaClear()
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
         Error(1)
     elif sys.argv[2] != "0" and sys.argv[2] != "1":
         Error(8)
