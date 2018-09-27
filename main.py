@@ -92,7 +92,12 @@ if __name__ == '__main__':
         try:
             import install
             if install.install() == 0:
+                print("Install succeed")
                 os.system("rm -rf install.py")
+                os._exit(0)
+            else:
+               print("Install failed, please determine the relationship package and file integrity")
+               os._exit(0)
         except:
             Error(9)
             os._exit(0)

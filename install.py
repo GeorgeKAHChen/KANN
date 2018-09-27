@@ -28,7 +28,6 @@ def install():
     os.system("g++ -std=c++11 test_run_cnn.cc keras_model.cc -o ctest")
     os.system("vim Setting.py")
     os.system("mv gitignore .gitignore")
-    os.system("sh setup.sh")
     return 0
 
 
