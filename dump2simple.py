@@ -56,16 +56,14 @@ with open(Setting.ModelFolder + "/model.dumped", 'w') as fout:
             fout.write(str(model.layers[ind].get_weights()[1]) + '\n')
 
 
-if os.path.exists("tmp"):
-    os.system("rm -rf tmp")
-Init.BuildFile("tmp")
+if os.path.exists("./tmp"):
+    os.system("rm -rf ./tmp")
 String = ""
-String += "ModelFolder='" + str(Setting.ModelFolder) + "'\n"
-String += "TestFolder='" + str(Setting.TestFolder) + "'\n"
-String += "OutputFolder='" + str(Setting.OutputFolder) + "'\n"
+String += "ModelFolder=" + str(Setting.ModelFolder) + "\n"
+String += "TestFolder=" + str(Setting.TestFolder) + "\n"
+String += "OutputFolder=" + str(Setting.OutputFolder) + "\n"
 File = open("tmp", "w")
 File.write(String)
 File.close()
-
 
 

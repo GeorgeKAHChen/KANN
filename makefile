@@ -8,11 +8,11 @@ main:
 test:
 	@python3 main.py -t ${p} ${t}
 
-ctinit:
-	@python3 dump2simple.py
+cinit:
+	@python3 main.py -ci ${p} ${t}
 
-cpptest:
-	./ctest ${ModelFolder}/model.dumped ${TestFolder} ${OutputFolder}/Result.out
+ctest:
+	./ctest ${ModelFolder}/model.dumped ${TestFolder}/data.dat ${OutputFolder}/Result.out
 
 train:
 	@python3 main.py -l ${p} ${t}

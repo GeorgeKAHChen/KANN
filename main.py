@@ -47,6 +47,7 @@ def TestMain(Presentation):
 
 
 def Error(code):
+    import os
     """
     All error will be treated in this funtion, it is necesasry to input error
     code into this function
@@ -79,6 +80,7 @@ def Error(code):
         print("Unknown error, please connect the author and administrator")
     
     print("For more help, please using command `make help`")
+    os._exit(0)
     return
 
 
@@ -120,9 +122,20 @@ if __name__ == '__main__':
         TrainMain(int(sys.argv[2]))
     elif sys.argv[1] == "-t":
         TestMain(int(sys.argv[2]))
-        
+    elif sys.argv[1] == "-ci":
+        try:
+            import dump2simple
+        except:
+            Error(-1)
+        import Test
+        tmp, Data, Name = Test.Pretreatment(TestDir, SufixSet, ModelDir)        
+        if tmp != 0:
+            Error(tmp)
+            os._exit(0)
+        import numpy as np
+        #np.savetxt(TestDir + "/data.dat", Data)
+        print()
     
-
 
 
 

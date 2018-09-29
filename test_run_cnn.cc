@@ -10,7 +10,7 @@
 #include "keras_model.h"
 
 #include <iostream>
-
+#include <string>
 using namespace std;
 using namespace keras;
 
@@ -20,7 +20,8 @@ int main(int argc, char *argv[]) {
   string dumped_cnn = argv[1];
   string input_data = argv[2];
   string response_file = argv[3];
-
+  
+  printf("\n\n%s\n\s\n\s\n", dumed_cnn, input_data, response_file);  
   // Input data sample
   DataChunk *sample = new DataChunk2D();
   sample->read_from_file(input_data);
@@ -38,5 +39,6 @@ int main(int argc, char *argv[]) {
       fout << response[i] << " ";
   }
   fout.close();
+  
   return 0;
 }

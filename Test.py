@@ -68,7 +68,15 @@ def Test(TestData, ModelDir, OutputDir, FileNames):
     print("Model read succeed, testing", end = "\r")
 
     OutputStr = "FileName\t |\tResult\n"
+   
+    #print()
+    #import datetime
+    #starttime = datetime.datetime.now()
+
     Result = model.predict_classes(TestData)
+
+    #endtime = datetime.datetime.now()
+    #print ((endtime - starttime))
 
     for i in range(0, len(FileNames)):
         OutputStr += FileNames[i] + "\t |\t" + str(Result[i]) + "\n"
