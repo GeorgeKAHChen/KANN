@@ -86,7 +86,7 @@ def Train(trainX, trainY, ModelFolder, Iteration, Presentation):
 
     model = Sequential()
     model.add(Conv2D(8, kernel_size=(3, 3),activation='linear',input_shape=(128, 72, 1), padding='same'))
-    model.add(LeakyReLU(alpha=0.1))
+    #model.add(LeakyReLU(alpha=0.1))
     model.add(MaxPooling2D((2, 2),padding='same'))
     #model.add(Conv2D(64, (3, 3), activation='linear',padding='same'))
     #model.add(LeakyReLU(alpha=0.1))
@@ -95,8 +95,8 @@ def Train(trainX, trainY, ModelFolder, Iteration, Presentation):
     #model.add(LeakyReLU(alpha=0.1))                  
     #model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
     model.add(Flatten())
-    model.add(Dense(16, activation='linear'))
-    model.add(LeakyReLU(alpha=0.1))                  
+    #model.add(Dense(16, activation='linear'))
+    #model.add(LeakyReLU(alpha=0.1))                  
     model.add(Dense(num_classes, activation='softmax'))
 
     model.compile(loss=keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adam(),metrics=['accuracy'])

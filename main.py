@@ -33,7 +33,7 @@ def TrainMain(Presentation):
 
 def TestMain(Presentation):
     import Test
-    tem, TestData, FileNames = Test.Pretreatment(TestDir, SufixSet, ModelDir)
+    tem, TestData, FileNames = Test.Pretreatment(TestDir, SufixSet, ModelDir, 0)
     if tem:
         Error(tem)
         return 
@@ -128,14 +128,46 @@ if __name__ == '__main__':
         except:
             Error(-1)
         import Test
-        tmp, Data, Name = Test.Pretreatment(TestDir, SufixSet, ModelDir)        
+        tmp, Data, Name = Test.Pretreatment(TestDir, SufixSet, ModelDir, 1) 
         if tmp != 0:
             Error(tmp)
             os._exit(0)
+        if not os.path.exists(TestDir + "/tmp"):
+            os.system("mkdir " + TestDir + "/tmp")
+        else:
+            os.system("rm -rf " + TestDir + "/tmp")
+            os.system("mkdir " + TestDir + "/tmp")
+               
+        for i in range(0, len(Name)):
+            Init.BuildFile(TestDir + "/tmp/" + Name[i] + ".dat")
+            with open(TestDir + "/tmp/" + Name[i] + ".dat", "w") as fin:
+                fin.write("1 " + str(len(Data[i])) + " " + str(len(Data[i][0]))  + "\n")
+                for j in range(0, len(Data[i])):
+                    fin.write("[")
+                    for k in range(0, len(Data[i][j])):
+                        fin.write(str(Data[i][j][k]))
+                        if k != len(Data[i][j]) - 1:
+                            fin.write("\t")
+                        else:
+                            fin.write("]\n")
+                        
+        """
         import numpy as np
-        #np.savetxt(TestDir + "/data.dat", Data)
-        print()
-    
+        np.set_printoptions(threshold=np.inf)
+        with open(TestDir + "/data.dat", "w") as fin:
+            fin.write(str(len(Data)) + " " + str(len(Data[0])) + " " + str(len(Data[0][0])) + "  1\n")
+            fin.write("[")
+            for b in Data:
+                fin.write("[")
+                for c in b:
+                    fin.write("[")
+                    for d in c:
+                        fin.write("[" + str(d) + "]\t")
+                    fin.write("]\n")            
+                fin.write("]\n")
+            fin.write("]")
+        """
+        print() 
 
 
 

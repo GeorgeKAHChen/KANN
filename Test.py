@@ -6,7 +6,7 @@
 ##
 ####################################################
 import Init
-def Pretreatment(FileDir, SufixSet, ModelDir):
+def Pretreatment(FileDir, SufixSet, ModelDir, ct):
     import numpy as np
     from PIL import Image
     import cv2
@@ -32,7 +32,13 @@ def Pretreatment(FileDir, SufixSet, ModelDir):
     Name = []
     for i in range(0, len(Files1)):
         Str = ""
+        Node = False
         for j in range(len(Files1[i]) - 1, -1, -1):
+            if Files1[i][j] == ".":
+                Node = True
+                continue
+            if not Node:
+                continue
             if Files1[i][j] == "/":
                 break
             Str = Files1[i][j] + Str
@@ -48,7 +54,10 @@ def Pretreatment(FileDir, SufixSet, ModelDir):
         Data.append(cv2.resize(img, (128, 72)))
     
     Data = np.array(Data)
-    Data = Data.reshape(-1, 128, 72, 1)
+    if not ct:
+        Data = Data.reshape(-1, 128, 72, 1)
+    else:
+        Data = Data.reshape(-1, 128, 72)
     Data = Data / 255
 
     print("Data read succeed, testing surround initial", end = "\r")
@@ -74,7 +83,7 @@ def Test(TestData, ModelDir, OutputDir, FileNames):
     #starttime = datetime.datetime.now()
 
     Result = model.predict_classes(TestData)
-
+    print(model.predict(TestData))
     #endtime = datetime.datetime.now()
     #print ((endtime - starttime))
 

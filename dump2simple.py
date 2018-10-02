@@ -10,6 +10,7 @@
 #       Changed by KazukiAmakawa
 #       For the program of KANN
 #       Github: https://github.com/KazukiAmakawa/KANN
+#       Github: https://github.com/KazukiAmakawa/keras2cpp
 #
 ####################################################
 
@@ -24,18 +25,22 @@ model.load_weights(Setting.ModelFolder + "/model.h5")
 model.compile(loss='categorical_crossentropy', optimizer='adadelta')
 arch = json.loads(open(Setting.ModelFolder + "/model.json").read())
 
+
 with open(Setting.ModelFolder + "/model.dumped", 'w') as fout:
     fout.write('layers ' + str(len(model.layers)) + '\n')
 
     layers = []
     for ind, l in enumerate(arch["config"]):
-        fout.write('layer ' + str(ind) + ' ' + l['class_name'] + '\n')
+        if l['class_name'] == 'Conv2D':
+            fout.write('layer ' + str(ind) + ' ' + 'Convolution2D' + '\n')
+        else:
+            fout.write('layer ' + str(ind) + ' ' + l['class_name'] + '\n')
 
         layers += [l['class_name']]
-        if l['class_name'] == 'Convolution2D':
+        if l['class_name'] == 'Conv2D':
             W = model.layers[ind].get_weights()[0]
-            fout.write(str(W.shape[0]) + ' ' + str(W.shape[1]) + ' ' + str(W.shape[2]) + ' ' + str(W.shape[3]) + ' ' + l['config']['border_mode'] + '\n')
-
+            print(str(len(W)) + ' ' + str(len(W[0])) + ' ' + str(len(W[0][0]))+ ' ' + str(len(W[0][0][0])))
+            fout.write(str(len(W)) + ' ' + str(len(W[0])) + ' ' + str(len(W[0][0])) + ' ' + str(len(W[0][0][0])) + ' ' + l['config']['padding'] + '\n')
             for i in range(W.shape[0]):
                 for j in range(W.shape[1]):
                     for k in range(W.shape[2]):

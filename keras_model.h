@@ -57,6 +57,7 @@ public:
   size_t get_data_dim(void) const { return 3; }
 
   void show_name() {
+    
     std::cout << "DataChunk2D " << data.size() << "x" << data[0].size() << "x" << data[0][0].size() << std::endl;
   }
 

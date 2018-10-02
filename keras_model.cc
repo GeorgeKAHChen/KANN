@@ -77,7 +77,7 @@ void keras::LayerConv2D::load_weights(std::ifstream &fin) {
   }
   // reading kernel biases
   fin >> tmp_char; // for '['
-  for(int k = 0; k < m_kernels_cnt; ++k) {
+  for(int k = 0; k < m_cols; ++k) {
     fin >> tmp_float;
     m_bias.push_back(tmp_float);
   }
@@ -127,6 +127,7 @@ keras::KerasModel::KerasModel(const string &input_fname, bool verbose)
 
 
 keras::DataChunk* keras::LayerFlatten::compute_output(keras::DataChunk* dc) {
+  cout << "flatten succeed" << endl;
   vector<vector<vector<float> > > im = dc->get_3d();
 
   size_t csize = im[0].size();
@@ -148,6 +149,7 @@ keras::DataChunk* keras::LayerFlatten::compute_output(keras::DataChunk* dc) {
 
 
 keras::DataChunk* keras::LayerMaxPooling::compute_output(keras::DataChunk* dc) {
+  cout << "pooling succeed" << endl;
   vector<vector<vector<float> > > im = dc->get_3d();
   vector<vector<vector<float> > > y_ret;
   for(unsigned int i = 0; i < im.size(); ++i) {
@@ -187,7 +189,7 @@ void keras::missing_activation_impl(const string &act) {
 }
 
 keras::DataChunk* keras::LayerActivation::compute_output(keras::DataChunk* dc) {
-
+  cout << "activation succeed" << endl;
   if (dc->get_data_dim() == 3) {
     vector<vector<vector<float> > > y = dc->get_3d();
     if(m_activation_type == "relu") {
@@ -310,7 +312,6 @@ keras::DataChunk* keras::LayerConv2D::compute_output(keras::DataChunk* dc) {
   unsigned int st_y = (m_kernels[0][0][0].size()-1) >> 1;
   vector< vector< vector<float> > > y_ret;
   auto const & im = dc->get_3d();
-
   size_t size_x = (m_border_mode == "valid")? im[0].size() - 2 * st_x : im[0].size();
   size_t size_y = (m_border_mode == "valid")? im[0][0].size() - 2 * st_y: im[0][0].size();
   for(unsigned int i = 0; i < m_kernels.size(); ++i) { // depth
@@ -321,31 +322,29 @@ keras::DataChunk* keras::LayerConv2D::compute_output(keras::DataChunk* dc) {
     }
     y_ret.push_back(tmp);
   }
-
+  cout << m_kernels.size() << "  " << im.size() << "  " << endl;
   for(unsigned int j = 0; j < m_kernels.size(); ++j) { // loop over kernels
     for(unsigned int m = 0; m < im.size(); ++m) { // loope over image depth
 
       vector<vector<float> > tmp_w = (m_border_mode == "valid")?
                         keras::conv_single_depth_valid(im[m], m_kernels[j][m]) :
                         keras::conv_single_depth_same(im[m], m_kernels[j][m]);
-
       for(unsigned int x = 0; x < tmp_w.size(); ++x) {
         for(unsigned int y = 0; y < tmp_w[0].size(); ++y) {
           y_ret[j][x][y] += tmp_w[x][y];
         }
       }
     }
-
     for(unsigned int x = 0; x < y_ret[0].size(); ++x) {
       for(unsigned int y = 0; y < y_ret[0][0].size(); ++y) {
         y_ret[j][x][y] += m_bias[j];
       }
     }
   }
-
   keras::DataChunk *out = new keras::DataChunk2D();
   out->set_data(y_ret);
   return out;
+
 }
 
 keras::DataChunk* keras::LayerDense::compute_output(keras::DataChunk* dc) {
@@ -385,22 +384,24 @@ keras::DataChunk* keras::LayerDense::compute_output(keras::DataChunk* dc) {
 
 
 std::vector<float> keras::KerasModel::compute_output(keras::DataChunk *dc) {
-  //cout << endl << "KerasModel compute output" << endl;
-  //cout << "Input data size:" << endl;
-  dc->show_name();
+  int test = 0;
+  
+  //test = 1;
 
+  dc->show_name();
   keras::DataChunk *inp = dc;
   keras::DataChunk *out = 0;
+  //cout << "|size:" << m_layers.size() << endl;
   for(int l = 0; l < (int)m_layers.size(); ++l) {
-    //cout << "Processing layer " << m_layers[l]->get_name() << endl;
+    //cout << l << endl;
+    if (test)   cout << "Processing layer " << m_layers[l]->get_name() << endl;
     out = m_layers[l]->compute_output(inp);
-
-    //cout << "Input" << endl;
-    //inp->show_name();
-    //cout << "Output" << endl;
-    //out->show_name();
+    //cout << out << endl;
+    if (test)   cout << "Input" << endl;
+    if (test)   inp->show_name();
+    if (test)   cout << "Output" << endl;
+    if (test)   out->show_name();
     if(inp != dc) delete inp;
-    //delete inp;
     inp = 0L;
     inp = out;
   }
@@ -413,19 +414,20 @@ std::vector<float> keras::KerasModel::compute_output(keras::DataChunk *dc) {
 }
 
 void keras::KerasModel::load_weights(const string &input_fname) {
-  if(m_verbose) cout << "Reading model from " << input_fname << endl;
+  if(m_verbose)   cout << "Reading model from " << input_fname << endl;
   ifstream fin(input_fname.c_str());
   string layer_type = "";
   string tmp_str = "";
   int tmp_int = 0;
 
   fin >> tmp_str >> m_layers_cnt;
-  if(m_verbose) cout << "Layers " << m_layers_cnt << endl;
-
+  if(m_verbose)   cout << "Layers " << m_layers_cnt << endl;
+  
   for(int layer = 0; layer < m_layers_cnt; ++layer) { // iterate over layers
     fin >> tmp_str >> tmp_int >> layer_type;
-    if(m_verbose) cout << "Layer " << tmp_int << " " << layer_type << endl;
 
+    if(m_verbose)  cout << "Layer " << tmp_int << ", " << layer_type << endl;
+    
     Layer *l = 0L;
     if(layer_type == "Convolution2D") {
       l = new LayerConv2D();

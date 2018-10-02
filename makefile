@@ -12,7 +12,7 @@ cinit:
 	@python3 main.py -ci ${p} ${t}
 
 ctest:
-	./ctest ${ModelFolder}/model.dumped ${TestFolder}/data.dat ${OutputFolder}/Result.out
+	./cpptest ${ModelFolder}/model.dumped ${TestFolder}/tmp  ${OutputFolder}/Result.out
 
 train:
 	@python3 main.py -l ${p} ${t}
