@@ -13,6 +13,8 @@ cinit:
 
 ctest:
 	./cpptest ${ModelFolder}/model.dumped ${TestFolder}/tmp  ${OutputFolder}/Result.out
+	rm -rf ${ModelFolder}/model.dumped
+	rm -rf ${TestFolder}/tmp
 
 train:
 	@python3 main.py -l ${p} ${t}
