@@ -31,3 +31,9 @@ install:
 set:
 	@vi Setting.py
 
+yuvtest:
+	mkdir ${OutputFolder}/yuvOutput
+	cp ./keras_model.cc ${OutputFolder}/yuvOutput
+	cp ./keras_model.h ${OutputFolder}/yuvOutput
+	cp ./yuvtest.h ${OutputFolder}/yuvOutput
+	cp ${ModelFolder}/model.dumped ${OutputFolder}/yuvOutput
