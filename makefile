@@ -13,6 +13,8 @@ cinit:
 
 ctest:
 	./cpptest ${ModelFolder}/model.dumped ${TestFolder}/tmp  ${OutputFolder}/Result.out
+ 
+sb:
 	rm -rf ${ModelFolder}/model.dumped
 	rm -rf ${TestFolder}/tmp
 

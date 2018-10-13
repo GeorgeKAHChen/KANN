@@ -57,8 +57,8 @@ public:
   size_t get_data_dim(void) const { return 3; }
 
   void show_name() {
-    
-    std::cout << "DataChunk2D " << data.size() << "x" << data[0].size() << "x" << data[0][0].size() << std::endl;
+    std::cout << "";
+    //std::cout << "DataChunk2D " << data.size() << "x" << data[0].size() << "x" << data[0][0].size() << std::endl;
   }
 
   void show_values() {
@@ -98,9 +98,11 @@ public:
   size_t get_data_dim(void) const { return 1; }
 
   void show_name() {
-    std::cout << "DataChunkFlat " << f.size() << std::endl;
+    std::cout << "";
+    //std::cout << "DataChunkFlat " << f.size() << std::endl;
   }
   void show_values() {
+    std::cout << "";
     std::cout << "DataChunkFlat values:" << std::endl;
     for(size_t i = 0; i < f.size(); ++i) std::cout << f[i] << " ";
     std::cout << std::endl;

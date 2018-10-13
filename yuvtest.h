@@ -20,25 +20,36 @@
 using namespace std;
 using namespace keras;
 
+#ifndef Initialization
 KerasModel m("model.dumped", false);
 
-int yuvcnn(int width, int height, unsigned char *yuvbuff) { 
+#define Initialization
+
+#endif
+
+
+int yuvcnn(int width, int height, unsigned char *yuvbuff, int Dwidth, int Dheight) {
+    if (Dwidth > width) || (Dheight > height)    return -1;
+
     int i, j;
     vector< vector<float> > Image;
 
     //downsample problem
     for (i = 0; i < width; i ++){
+        if (i % 10 != 0)                        continue;
         vector<float> tmp;
         for (j = 0; j < height; j ++){
-           tmp.push_back((float)yuvbuff[i * height + j] / 255);
+            if(j % 10 != 0)                     continue;
+            tmp.push_back((float)yuvbuff[i * height + j] / 255);
         }
         Image.push_back(tmp);
         delete tmp;
     }
     
     DataChunk *sample = new DataChunk2D();
-    
-    
+
+    sample->read_from_file(width, height, yuvbuff, Dwidth, Dheight);
+
     std::vector<float> response = m.compute_output(sample);
 
     delete sample;

@@ -13,6 +13,7 @@
 #include <fstream>
 #include <algorithm>
 #include <math.h>
+#include <vector>
 using namespace std;
 
 
@@ -32,9 +33,8 @@ std::vector<float> keras::read_1d_array(std::ifstream &fin, int cols) {
 void keras::DataChunk2D::read_from_file(const std::string &fname) {
   ifstream fin(fname.c_str());
   fin >> m_depth >> m_rows >> m_cols;
-
   for(int d = 0; d < m_depth; ++d) {
-    vector<vector<float> > tmp_single_depth;
+    vector<vector<float> > tmp_single_depth; 
     for(int r = 0; r < m_rows; ++r) {
       vector<float> tmp_row = keras::read_1d_array(fin, m_cols);
       tmp_single_depth.push_back(tmp_row);
@@ -42,6 +42,41 @@ void keras::DataChunk2D::read_from_file(const std::string &fname) {
     data.push_back(tmp_single_depth);
   }
   fin.close();
+}
+
+
+std::vector<float> keras::read_1d_array(std::ifstream &fin, int cols) {
+  vector<float> arr;
+  float tmp_float;
+  char tmp_char;
+  fin >> tmp_char; // for '['
+  for(int n = 0; n < cols; ++n) {
+    fin >> tmp_float;
+    arr.push_back(tmp_float);
+  }
+  fin >> tmp_char; // for ']'
+}
+
+void keras::DataChunk2D::read_from_data(const int width, const int height, unsigned char *yuvbuff, const int Dwidth, const int Dheight) {
+  /*
+  Added by KazukiAmakawa, for import data from data directly
+  */
+  m_depth = 1;
+  m_rows = Dwidth;
+  m_cols = Dheight;
+  for(int d = 0; d < m_depth; ++d) {
+    vector<vector<float> > tmp_single_depth; 
+    for(int r = 0; r < m_rows; ++r) {
+      if (r % 10 != 0)              continue;
+      vector<float> tmp_row;
+      for(int c = 0; c < m_cols; ++c){
+        if (c % 10 != 0)            continue;
+        tmp_row.append((float)yuvbuff[i * height + j] / 255);
+      }
+      tmp_single_depth.push_back(tmp_row);
+    }
+    data.push_back(tmp_single_depth);
+  }
 }
 
 
@@ -127,8 +162,9 @@ keras::KerasModel::KerasModel(const string &input_fname, bool verbose)
 
 
 keras::DataChunk* keras::LayerFlatten::compute_output(keras::DataChunk* dc) {
-  cout << "flatten succeed" << endl;
+  //cout << "flatten succeed" << endl;
   vector<vector<vector<float> > > im = dc->get_3d();
+  //cout << "flatten size: " << sizeof(im) << "  " << sizeof(im[0]) << "   " << sizeof(im[0][0]) << "  " << sizeof(im[0][0][0])/sizeof(float) << "   " << endl;
 
   size_t csize = im[0].size();
   size_t rsize = im[0][0].size();
@@ -143,15 +179,16 @@ keras::DataChunk* keras::LayerFlatten::compute_output(keras::DataChunk* dc) {
       }
     }
   }
-
+  //cout << "output flatten: " << sizeof(out) << endl;
   return out;
 }
 
 
 keras::DataChunk* keras::LayerMaxPooling::compute_output(keras::DataChunk* dc) {
-  cout << "pooling succeed" << endl;
+  //cout << "pooling succeed" << endl;
   vector<vector<vector<float> > > im = dc->get_3d();
   vector<vector<vector<float> > > y_ret;
+  //cout << "pooling size: " << sizeof(im) << "  " << sizeof(im[0]) << "   " << sizeof(im[0][0]) << "  " << sizeof(im[0][0][0])/sizeof(float) << "   " << endl;
   for(unsigned int i = 0; i < im.size(); ++i) {
     vector<vector<float> > tmp_y;
     for(unsigned int j = 0; j < (unsigned int)(im[0].size()/m_pool_x); ++j) {
@@ -179,6 +216,7 @@ keras::DataChunk* keras::LayerMaxPooling::compute_output(keras::DataChunk* dc) {
   }
   keras::DataChunk *out = new keras::DataChunk2D();
   out->set_data(y_ret);
+  //cout << "output pooling: " << sizeof(out) << "  " << sizeof(out[0])<< endl;
   return out;
 }
 
@@ -312,6 +350,7 @@ keras::DataChunk* keras::LayerConv2D::compute_output(keras::DataChunk* dc) {
   unsigned int st_y = (m_kernels[0][0][0].size()-1) >> 1;
   vector< vector< vector<float> > > y_ret;
   auto const & im = dc->get_3d();
+
   size_t size_x = (m_border_mode == "valid")? im[0].size() - 2 * st_x : im[0].size();
   size_t size_y = (m_border_mode == "valid")? im[0][0].size() - 2 * st_y: im[0][0].size();
   for(unsigned int i = 0; i < m_kernels.size(); ++i) { // depth
@@ -322,7 +361,7 @@ keras::DataChunk* keras::LayerConv2D::compute_output(keras::DataChunk* dc) {
     }
     y_ret.push_back(tmp);
   }
-  cout << m_kernels.size() << "  " << im.size() << "  " << endl;
+  //cout << m_kernels.size() << "  " << im.size() << "  " << endl;
   for(unsigned int j = 0; j < m_kernels.size(); ++j) { // loop over kernels
     for(unsigned int m = 0; m < im.size(); ++m) { // loope over image depth
 
@@ -343,6 +382,7 @@ keras::DataChunk* keras::LayerConv2D::compute_output(keras::DataChunk* dc) {
   }
   keras::DataChunk *out = new keras::DataChunk2D();
   out->set_data(y_ret);
+  //cout << "size conv:  " << out.get_3d().size() << "  " << out.get_3d()[0].size() << "  " << out.get_3d()[0][0].size() << endl ;
   return out;
 
 }
@@ -426,7 +466,8 @@ void keras::KerasModel::load_weights(const string &input_fname) {
   for(int layer = 0; layer < m_layers_cnt; ++layer) { // iterate over layers
     fin >> tmp_str >> tmp_int >> layer_type;
 
-    if(m_verbose)  cout << "Layer " << tmp_int << ", " << layer_type << endl;
+    //if(m_verbose)  
+    cout << "Layer " << tmp_int << ", " << layer_type << endl;
     
     Layer *l = 0L;
     if(layer_type == "Convolution2D") {

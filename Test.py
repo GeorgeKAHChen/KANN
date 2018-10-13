@@ -6,7 +6,7 @@
 ##
 ####################################################
 import Init
-def Pretreatment(FileDir, SufixSet, ModelDir, ct):
+def Pretreatment(FileDir, SufixSet, ModelDir, ct, Parameter):
     import numpy as np
     from PIL import Image
     import cv2
@@ -51,13 +51,13 @@ def Pretreatment(FileDir, SufixSet, ModelDir, ct):
     #Get image data and down sample    
     for i in range(0, len(Files1)):
         img = np.array(Image.open(Files1[i]).convert("L"))
-        Data.append(cv2.resize(img, (128, 72)))
+        Data.append(cv2.resize(img, (Parameter[1], Parameter[2])))
     
     Data = np.array(Data)
     if not ct:
-        Data = Data.reshape(-1, 128, 72, 1)
+        Data = Data.reshape(-1, Parameter[1], Parameter[2], 1)
     else:
-        Data = Data.reshape(-1, 128, 72)
+        Data = Data.reshape(-1, Parameter[1], Parameter[2])
     Data = Data / 255
 
     print("Data read succeed, testing surround initial", end = "\r")
@@ -65,7 +65,7 @@ def Pretreatment(FileDir, SufixSet, ModelDir, ct):
     return 0, np.array(Data), Name
         
 
-def Test(TestData, ModelDir, OutputDir, FileNames):
+def Test(TestData, ModelDir, OutputDir, FileNames, Parameter):
     import keras
     import os
     from keras.models import model_from_json

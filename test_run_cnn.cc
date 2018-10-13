@@ -35,14 +35,14 @@ int main(int argc, char *argv[]) {
   string inpdir(InpDir);
 
   while ((ent = readdir (dir)) != NULL) {
-    system("clear");
+    //system("clear");
     char * tmp_data = ent->d_name;
     
     string input_file(tmp_data);
     if(input_file == "." || input_file == "..")  continue;
 
     string input_data = inpdir + "/" + input_file;
-    cout << "FileName: " << input_data << endl;
+    //cout << "FileName: " << input_data << endl;
     // Input data sample
     DataChunk *sample = new DataChunk2D();
     //cout << sizeof(sample) << endl;

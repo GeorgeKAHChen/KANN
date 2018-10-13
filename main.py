@@ -14,16 +14,16 @@ ModelSave = Setting.ModelSave
 OutputDir = Setting.OutputFolder
 ModelDir = Setting.ModelFolder
 TestDir = Setting.TestFolder
-Iteration = Setting.iteration
+Parameter = Setting.Parameter
 
 def TrainMain(Presentation):
     import Train
-    tem, Data, Result = Train.Pretreatment(FileDir, SufixSet, ModelSave)
+    tem, Data, Result = Train.Pretreatment(FileDir, SufixSet, ModelSave, Parameter)
     if tem:
         Error(tem)        
         return
 
-    tem = Train.Train(Data, Result, ModelSave, Iteration, Presentation)
+    tem = Train.Train(Data, Result, ModelSave, Parameter, Presentation)
     if tem:
         Error(tem)
         return
@@ -33,12 +33,12 @@ def TrainMain(Presentation):
 
 def TestMain(Presentation):
     import Test
-    tem, TestData, FileNames = Test.Pretreatment(TestDir, SufixSet, ModelDir, 0)
+    tem, TestData, FileNames = Test.Pretreatment(TestDir, SufixSet, ModelDir, 0, Parameter)
     if tem:
         Error(tem)
         return 
     
-    tem = Test.Test(TestData, ModelDir, OutputDir, FileNames)
+    tem = Test.Test(TestData, ModelDir, OutputDir, FileNames, Parameter)
     if tem:
         Error(tem)
         return
@@ -128,7 +128,7 @@ if __name__ == '__main__':
         except:
             Error(-1)
         import Test
-        tmp, Data, Name = Test.Pretreatment(TestDir, SufixSet, ModelDir, 1) 
+        tmp, Data, Name = Test.Pretreatment(TestDir, SufixSet, ModelDir, 1, Parameter) 
         if tmp != 0:
             Error(tmp)
             os._exit(0)

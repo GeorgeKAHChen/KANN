@@ -8,7 +8,7 @@
 import Init
 
 
-def Pretreatment(FileDir, SufixSet, ModelFolder):
+def Pretreatment(FileDir, SufixSet, ModelFolder, Parameter):
     import numpy as np
     from PIL import Image
     import cv2
@@ -46,7 +46,7 @@ def Pretreatment(FileDir, SufixSet, ModelFolder):
     #Get image data and down sample    
     for i in range(0, len(Files1)):
         img = np.array(Image.open(Files1[i]).convert("L"))
-        Data.append(cv2.resize(img, (128, 72)))
+        Data.append(cv2.resize(img, (Parameter[1], Parameter[2])))
 
     print("Data read succeed, training surround initial", end = "\r")
     os.environ["CUDA_VISIBLE_DEVICES"]="0" 
@@ -54,7 +54,7 @@ def Pretreatment(FileDir, SufixSet, ModelFolder):
     Data = np.array(Data)
     Result = np.array(Result)
     
-    Data = Data.reshape(-1, 128, 72, 1)
+    Data = Data.reshape(-1, Parameter[1], Parameter[2], 1)
     Data = Data / 255
 
     Result = to_categorical(Result)
@@ -64,7 +64,7 @@ def Pretreatment(FileDir, SufixSet, ModelFolder):
 
 
 
-def Train(trainX, trainY, ModelFolder, Iteration, Presentation):
+def Train(trainX, trainY, ModelFolder, Parameter, Presentation):
     """
     keras network training
     """
@@ -80,12 +80,12 @@ def Train(trainX, trainY, ModelFolder, Iteration, Presentation):
     trainX,validX,trainY,validY = train_test_split(trainX, trainY, test_size=0.2, random_state=13)
 
 
-    batch_size = 128 * 72
-    epochs = Iteration
+    batch_size = Parameter[1] * Parameter[2]
+    epochs = Parameter[0]
     num_classes = 2
 
     model = Sequential()
-    model.add(Conv2D(8, kernel_size=(3, 3),activation='linear',input_shape=(128, 72, 1), padding='same'))
+    model.add(Conv2D(8, kernel_size=(3, 3),activation='linear',input_shape=(Parameter[1], Parameter[2], 1), padding='same'))
     #model.add(LeakyReLU(alpha=0.1))
     model.add(MaxPooling2D((2, 2),padding='same'))
     #model.add(Conv2D(64, (3, 3), activation='linear',padding='same'))
@@ -95,7 +95,7 @@ def Train(trainX, trainY, ModelFolder, Iteration, Presentation):
     #model.add(LeakyReLU(alpha=0.1))                  
     #model.add(MaxPooling2D(pool_size=(2, 2),padding='same'))
     model.add(Flatten())
-    #model.add(Dense(16, activation='linear'))
+    #model.add(Dense(32, activation='linear'))
     #model.add(LeakyReLU(alpha=0.1))                  
     model.add(Dense(num_classes, activation='softmax'))
 

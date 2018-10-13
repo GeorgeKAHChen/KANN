@@ -105,10 +105,17 @@ ModelFolder = "./Output/SampleModel"
 
 #====================================================
 """
-int iteration
+vector <*> Parameter
 
-This int is the number of iterations you want your learning algorithm 
-run during training
+This vector include most parameter in the network, they are
+
+    0   int     Iterator times
+    1   int     Down Sample Image Size width
+    2   int     Down Sample Image Size height
+    3   string  Network Structure 
+    (Not Finished)
 """
-iteration = 500
+Parameter = [500, 128, 72, ""]
 #====================================================
+
+
